@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import net.javaguides.employeeservice.dto.APIResponseDto;
 import net.javaguides.employeeservice.dto.DepartmentDto;
 import net.javaguides.employeeservice.dto.EmployeeDto;
+import net.javaguides.employeeservice.dto.OrganizationDto;
 import net.javaguides.employeeservice.entity.Employee;
 import net.javaguides.employeeservice.exception.ResourceNotFoundException;
 import net.javaguides.employeeservice.mapper.AutoEmployeeMapper;
@@ -32,7 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 //    private RestTemplate restTemplate;
 
-//    private WebClient webClient;
+    private WebClient webClient;
 
     private APIClient apiClient;
 
@@ -85,6 +86,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 //                                            .bodyToMono(DepartmentDto.class)
 //                                            .block();
         DepartmentDto departmentDto=apiClient.getDepartment(employee.getDepartmentCode());
+
+        OrganizationDto organizationDto=webClient.get()
+                .uri("http://localhost:8090/api/organizations/"+employee.getOrganizationCode())
+                .retrieve()
+                .bodyToMono(OrganizationDto.class)
+                .block();
 //        EmployeeDto employeeDto=new EmployeeDto(
 //                employee.getId(),
 //                employee.getFirstName(),
@@ -99,6 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         APIResponseDto apiResponseDto=new APIResponseDto();
         apiResponseDto.setEmployee(employeeDto);
         apiResponseDto.setDepartment(departmentDto);
+        apiResponseDto.setOrganization(organizationDto);
 
         return apiResponseDto;
     }

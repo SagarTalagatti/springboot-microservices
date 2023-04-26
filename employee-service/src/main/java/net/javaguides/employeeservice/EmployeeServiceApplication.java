@@ -30,9 +30,9 @@ public class EmployeeServiceApplication {
 //		return new RestTemplate();
 //	}
 
-//	@Bean
-//	public WebClient getWebClient(){
-//
-//		return WebClient.builder().build();
-//	}
+	@Bean
+	public WebClient getWebClient(){
+
+		return WebClient.builder().build();
+	}
 }
